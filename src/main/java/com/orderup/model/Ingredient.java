@@ -6,11 +6,16 @@ package com.orderup.model;
 public class Ingredient extends GameItem {
     private final IngredientType type;
     private IngredientStatus status = IngredientStatus.RAW;
-    private double processProgress;
 
     public Ingredient(IngredientType type, double x, double y) {
         super(x, y);
         this.type = type;
+    }
+
+    public Ingredient(IngredientType type,IngredientStatus status){
+        super(0,0);
+        this.type=type;
+        this.status=status;
     }
 
     public IngredientType getType() {
@@ -23,13 +28,5 @@ public class Ingredient extends GameItem {
 
     public void setStatus(IngredientStatus status) {
         this.status = status;
-    }
-
-    public double getProcessProgress() {
-        return processProgress;
-    }
-
-    public void setProcessProgress(double processProgress) {
-        this.processProgress = processProgress;
     }
 }

@@ -1,7 +1,9 @@
 package com.orderup.model;
 
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 /**
  * 玩家位置、朝向、输入状态和手持物品。
@@ -11,7 +13,7 @@ public class Player {
     public static final double HEIGHT = 60;
     private static final double DEFAULT_SPEED = 220;
 
-    private final Set<Direction> pressedDirections = EnumSet.noneOf(Direction.class);
+    private final Set<Direction> pressedDirections = new HashSet<>();
     private double x;
     private double y;
     private double speed;
@@ -35,6 +37,11 @@ public class Player {
 
     public void release(Direction direction) {
         pressedDirections.remove(direction);
+        pressedDirections.stream()
+                .findFirst()
+                .ifPresent(remainingDirection ->
+                        facingDirection = remainingDirection
+                );
     }
 
     public void clearInput() {

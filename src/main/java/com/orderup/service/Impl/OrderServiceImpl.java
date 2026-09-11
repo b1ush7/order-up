@@ -1,30 +1,19 @@
 package com.orderup.service.Impl;
 
-import com.orderup.model.DishType;
-import com.orderup.model.Order;
-import com.orderup.model.OrderResult;
-import com.orderup.model.Plate;
-import com.orderup.model.Recipe;
+import com.orderup.config.GameConfig;
+import com.orderup.model.*;
+import com.orderup.service.OrderService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 创建、更新并提交订单。
  */
-public class OrderServiceImpl implements com.orderup.service.OrderService {
-    private final List<Recipe> recipes = List.of(
-            new Recipe(DishType.SASHIMI, 100, 30),
-            new Recipe(DishType.ROLL, 150, 45)
-    );
+public class OrderServiceImpl implements OrderService {
     private final List<Order> activeOrders = new ArrayList<>();
     private final ScoreServiceImpl scoreService;
     private final Random random;
-
+    private final List<Recipe> recipes= GameConfig.recipes;
     public OrderServiceImpl() {
         this(new ScoreServiceImpl(), new Random());
     }
