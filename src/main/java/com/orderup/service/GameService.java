@@ -1,23 +1,12 @@
 package com.orderup.service;
 
 import com.orderup.config.GameConfig;
-import com.orderup.model.GameMap;
-import com.orderup.model.Plate;
-import com.orderup.model.Table;
-import com.orderup.model.Tile;
-import com.orderup.model.TileType;
+import com.orderup.model.*;
 
-/**
- * 创建并初始化关卡地图。
- */
-public class GameService {
-    public GameMap createMap() {
-        GameMap map = new GameMap();
-        configureMap(map);
-        return map;
-    }
+public interface GameService {
+    GameMap createMap();
 
-    private void configureMap(GameMap map) {
+    default void configureMap(GameMap map) {
         for (int row = 0; row < GameConfig.MAP_ROWS; row++) {
             placeTable(map, row, 0);
             placeTable(map, row, GameConfig.MAP_COLUMNS - 1);
@@ -34,7 +23,7 @@ public class GameService {
         map.addItem(new Plate(130, 130));
     }
 
-    private void placeTable(GameMap map, int row, int column) {
+    default void placeTable(GameMap map, int row, int column) {
         map.setTile(row, column, new Table(row, column));
     }
 }

@@ -9,7 +9,9 @@ import com.orderup.model.InteractionResult;
 import com.orderup.model.Player;
 import com.orderup.model.Tile;
 import com.orderup.service.GameService;
-import com.orderup.service.KitchenService;
+import com.orderup.service.Impl.GameServiceImpl;
+import com.orderup.service.Impl.KitchenServiceImpl;
+import com.orderup.service.Impl.PlayerServiceImpl;
 import com.orderup.service.PlayerService;
 import com.orderup.util.GameTimer;
 
@@ -21,7 +23,7 @@ public class GameController {
     private final InteractionArea interactionArea;
     private final GameMap gameMap;
     private final PlayerService playerService;
-    private final KitchenService kitchenService;
+    private final com.orderup.service.KitchenService kitchenService;
     private final GameTimer gameTimer;
     private final Runnable onGameFinished;
 
@@ -30,9 +32,9 @@ public class GameController {
     public GameController(Runnable onGameFinished) {
         this.onGameFinished = onGameFinished;
 
-        GameService gameService = new GameService();
-        playerService = new PlayerService();
-        kitchenService = new KitchenService();
+        GameService gameService = new GameServiceImpl();
+        playerService = new PlayerServiceImpl();
+        kitchenService = new KitchenServiceImpl();
 
         player = new Player(GameConfig.PLAYER_START_X, GameConfig.PLAYER_START_Y);
         interactionArea = new InteractionArea();

@@ -7,6 +7,7 @@ import com.orderup.model.IngredientType;
 import com.orderup.model.Order;
 import com.orderup.model.OrderResult;
 import com.orderup.model.Plate;
+import com.orderup.service.Impl.OrderServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class OrderServiceTest {
     @Test
     void submitsAPlateMatchingTheActiveOrder() {
-        OrderService service = new OrderService();
+        OrderServiceImpl service = new OrderServiceImpl();
         Order order = service.createRandomOrder();
         Plate plate = plateFor(order.getRecipe().getDishType());
 

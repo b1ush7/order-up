@@ -9,7 +9,7 @@ public final class GameConfig {
     public static final int MAP_ROWS = 9;
     public static final int MAP_COLUMNS = 13;
     public static final int TILE_SIZE = 80;
-    public static final int GAME_SECONDS = 60;
+    public static final int GAME_SECONDS = 600;
     public static final double FIXED_STEP_SECONDS = 1.0 / 60.0;
     public static final double MAX_ACCUMULATED_SECONDS = 0.25;
     public static final double PLAYER_START_X = 200;

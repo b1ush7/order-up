@@ -3,12 +3,14 @@ package com.orderup.service;
 import com.orderup.model.Direction;
 import com.orderup.model.GameMap;
 import com.orderup.model.Player;
+import com.orderup.service.Impl.GameServiceImpl;
+import com.orderup.service.Impl.PlayerServiceImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PlayerServiceTest {
-    private final PlayerService service = new PlayerService();
+    private final PlayerService service = new PlayerServiceImpl();
 
     @Test
     void movesAtTheConfiguredSpeed() {
@@ -39,7 +41,7 @@ class PlayerServiceTest {
         Player player = new Player(90, 82);
         player.press(Direction.UP);
 
-        service.move(player, 0.02, 1280, 720, new GameService().createMap());
+        service.move(player, 0.02, 1280, 720, new GameServiceImpl().createMap());
 
         assertEquals(82, player.getY(), 0.001);
     }
