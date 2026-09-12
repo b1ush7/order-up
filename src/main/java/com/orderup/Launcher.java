@@ -1,5 +1,6 @@
 package com.orderup;
 
+import com.orderup.config.GameConfig;
 import com.orderup.controller.ResultController;
 import com.orderup.controller.StartController;
 import com.orderup.view.GameView;
@@ -19,8 +20,10 @@ import java.net.URL;
  * Order Up 的 JavaFX 启动入口，负责窗口和页面切换。
  */
 public class Launcher extends Application {
-    private static final double WINDOW_WIDTH = 1280;
-    private static final double WINDOW_HEIGHT = 720;
+    private static final String START_FXML = "/com/orderup/fxml/start.fxml";
+    private static final String GAME_FXML = "/com/orderup/fxml/game.fxml";
+    private static final String RESULT_FXML = "/com/orderup/fxml/result.fxml";
+    private static final String MENU_MUSIC = "/com/orderup/audio/startmenu.mp3";
 
     private Stage primaryStage;
     private MediaPlayer menuMusic;
@@ -41,18 +44,18 @@ public class Launcher extends Application {
     }
 
     public void showStartScene() {
-        showScene("/com/orderup/fxml/start.fxml");
+        showScene(START_FXML);
         playMenuMusic();
     }
 
     public void showGameScene() {
         stopMenuMusic();
-        showScene("/com/orderup/fxml/game.fxml");
+        showScene(GAME_FXML);
     }
 
     public void showResultScene() {
         stopMenuMusic();
-        showScene("/com/orderup/fxml/result.fxml");
+        showScene(RESULT_FXML);
     }
 
     private void showScene(String fxmlPath) {
@@ -74,7 +77,11 @@ public class Launcher extends Application {
 
             Scene scene = primaryStage.getScene();
             if (scene == null) {
-                primaryStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
+                primaryStage.setScene(new Scene(
+                        root,
+                        GameConfig.WINDOW_WIDTH,
+                        GameConfig.WINDOW_HEIGHT
+                ));
             } else {
                 scene.setRoot(root);
             }
@@ -96,7 +103,7 @@ public class Launcher extends Application {
 
     private void playMenuMusic() {
         if (menuMusic == null) {
-            URL resource = Launcher.class.getResource("/com/orderup/audio/startmenu.mp3");
+            URL resource = Launcher.class.getResource(MENU_MUSIC);
             if (resource == null) {
                 System.err.println("Start menu music was not found.");
                 return;

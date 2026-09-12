@@ -1,13 +1,17 @@
 package com.orderup.model;
 
 public enum TileType {
-    INGREDIENT_SOURCE, //食材库
-    CUTTING_BOARD, //切菜板
-    FRYING_PAN,//煎锅
-    COOKING_POT,//锅
-    BLENDER,//搅拌机
-    SERVING_COUNTER,//服务台
-    TRASH_BIN, //垃圾桶
-    WALL,//墙
-    FLOOR//地板
+    FLOOR(false),
+    TABLE(true),
+    INGREDIENT_SOURCE(true);
+
+    private final boolean blocking;
+
+    TileType(boolean blocking) {
+        this.blocking = blocking;
+    }
+
+    public boolean isBlocking() {
+        return blocking;
+    }
 }

@@ -1,77 +1,115 @@
 package com.orderup.service.Impl;
 
+import com.orderup.config.GameConfig;
 import com.orderup.model.Direction;
 import com.orderup.model.GameMap;
 import com.orderup.model.Player;
-import com.orderup.model.TileType;
 import com.orderup.model.Tile;
-import com.orderup.service.PlayerService;
 
-public class PlayerServiceImpl implements PlayerService {
+/**
+ * 根据输入移动玩家并处理地图碰撞。
+ */
+public class PlayerServiceImpl implements com.orderup.service.PlayerService {
+    /** {@inheritDoc} */
     @Override
     public void move(
             Player player,
             double deltaSeconds,
             double worldWidth,
             double worldHeight,
-            GameMap gameMap
+            GameMap map
     ) {
-        double dx = 0;
-        double dy = 0;
-
-        if (player.pressedDirections.contains(Direction.UP)) {
-            dy -= 1;
-        }
-        if (player.pressedDirections.contains(Direction.DOWN)) {
-            dy += 1;
-        }
-        if (player.pressedDirections.contains(Direction.LEFT)) {
-            dx -= 1;
-        }
-        if (player.pressedDirections.contains(Direction.RIGHT)) {
-            dx += 1;
+        if (deltaSeconds < 0) {
+            throw new IllegalArgumentException("Delta seconds cannot be negative.");
         }
 
-        player.x += dx * player.getSpeed() * deltaSeconds;
-        player.y += dy * player.getSpeed() * deltaSeconds;
+        double dx = horizontalInput(player);
+        double dy = verticalInput(player);
+        if (dx != 0 && dy != 0) {
+            double diagonalScale = 1.0 / Math.sqrt(2);
+            dx *= diagonalScale;
+            dy *= diagonalScale;
+        }
 
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 13; j++) {
-                Tile tile = gameMap.getTiles(i, j);
-                if (tile.getType() != TileType.WALL) {
-                    continue;
-                }
+        double distance = player.getSpeed() * deltaSeconds;
+        double nextX = clamp(player.getX() + dx * distance, 0, worldWidth - Player.WIDTH);
+        if (!collidesWithBlockingTile(nextX, player.getY(), map)) {
+            player.setPosition(nextX, player.getY());
+        }
 
-                double tileX = tile.getX();
-                double tileY = tile.getY();
-                double tileSize = tile.TileSize;
+        double nextY = clamp(player.getY() + dy * distance, 0, worldHeight - Player.HEIGHT);
+        if (!collidesWithBlockingTile(player.getX(), nextY, map)) {
+            player.setPosition(player.getX(), nextY);
+        }
+    }
 
-                if (player.y + Player.HEIGHT > tileY && player.y < tileY + tileSize) {
-                    if (player.x + Player.WIDTH >= tileX
-                            && player.x + Player.WIDTH <= tileX + tileSize / 4) {
-                        player.x = tileX - Player.WIDTH;
-                    } else if (player.x <= tileX + tileSize
-                            && player.x >= tileX + tileSize - tileSize / 4) {
-                        player.x = tileX + tileSize;
-                    }
-                }
+    /**
+     * 将左右按键状态合并为水平方向值。
+     *
+     * @param player 输入状态的来源
+     * @return 向左为 -1，向右为 1，抵消或无输入为 0
+     */
+    private double horizontalInput(Player player) {
+        double direction = 0;
+        if (player.isMoving(Direction.LEFT)) {
+            direction--;
+        }
+        if (player.isMoving(Direction.RIGHT)) {
+            direction++;
+        }
+        return direction;
+    }
 
-                if (player.x + Player.WIDTH > tileX && player.x < tileX + tileSize) {
-                    if (player.y + Player.HEIGHT >= tileY
-                            && player.y + Player.HEIGHT <= tileY + tileSize / 4) {
-                        player.y = tileY - Player.HEIGHT;
-                    } else if (player.y <= tileY + tileSize
-                            && player.y >= tileY + tileSize - tileSize / 4) {
-                        player.y = tileY + tileSize;
-                    }
+    /**
+     * 将上下按键状态合并为垂直方向值。
+     *
+     * @param player 输入状态的来源
+     * @return 向上为 -1，向下为 1，抵消或无输入为 0
+     */
+    private double verticalInput(Player player) {
+        double direction = 0;
+        if (player.isMoving(Direction.UP)) {
+            direction--;
+        }
+        if (player.isMoving(Direction.DOWN)) {
+            direction++;
+        }
+        return direction;
+    }
+
+    /**
+     * 检查玩家放在候选坐标后是否会与任意阻挡格子重叠。
+     *
+     * @param x 玩家候选 X 坐标
+     * @param y 玩家候选 Y 坐标
+     * @param map 用于查找阻挡格子的地图
+     * @return 存在碰撞时返回 {@code true}
+     */
+    private boolean collidesWithBlockingTile(double x, double y, GameMap map) {
+        for (int row = 0; row < GameConfig.MAP_ROWS; row++) {
+            for (int column = 0; column < GameConfig.MAP_COLUMNS; column++) {
+                Tile tile = map.getTile(row, column);
+                if (tile.getType().isBlocking() && intersects(x, y, tile)) {
+                    return true;
                 }
             }
         }
-
-        player.x = clamp(player.x, 0, worldWidth - Player.WIDTH);
-        player.y = clamp(player.y, 0, worldHeight - Player.HEIGHT);
+        return false;
     }
 
+    /**
+     * 使用轴对齐矩形检测玩家与一个格子是否相交。
+     */
+    private boolean intersects(double x, double y, Tile tile) {
+        return x < tile.getX() + tile.getSize()
+                && x + Player.WIDTH > tile.getX()
+                && y < tile.getY() + tile.getSize()
+                && y + Player.HEIGHT > tile.getY();
+    }
+
+    /**
+     * 将数值限制在指定闭区间内。
+     */
     private double clamp(double value, double minimum, double maximum) {
         return Math.max(minimum, Math.min(value, maximum));
     }

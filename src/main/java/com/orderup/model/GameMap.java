@@ -1,38 +1,49 @@
 package com.orderup.model;
 
-import lombok.Data;
+import com.orderup.config.GameConfig;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-@Data
+/**
+ * 地图格子和场上物品的容器。
+ */
 public class GameMap {
-    private MapName mapname;
-    private int mapId =1;
-    private static int ROWS=9;
-    private static int COLS=13;
-    public Tile[][] tiles;
-    //初始化所有瓷砖
-    public GameMap(MapName mapName1){
-        tiles=new Tile[ROWS][COLS];
-        for(int i=0;i<ROWS;i++){
-            for(int j=0;j<COLS;j++){
-                tiles[i][j]=new Tile(j,i);
+    private final Tile[][] tiles;
+    private final List<GameItem> items = new ArrayList<>();
+
+    public GameMap() {
+        this.tiles = new Tile[GameConfig.MAP_ROWS][GameConfig.MAP_COLUMNS];
+        for (int row = 0; row < GameConfig.MAP_ROWS; row++) {
+            for (int column = 0; column < GameConfig.MAP_COLUMNS; column++) {
+                tiles[row][column] = new Tile(row, column);
             }
         }
-        mapname= mapName1;
     }
 
-    //瓷砖Type
-    public void setTiles(int x, int y, TileType typeI){
-        tiles[x][y].TileType=typeI;
+    public Tile getTile(int row, int column) {
+        return tiles[row][column];
     }
 
-    public Tile getTiles(int x, int y){
-       return tiles[x][y];
+    public void setTile(int row, int column, Tile tile) {
+        tiles[row][column] = tile;
     }
 
+    public <T extends GameItem> T addItem(T item) {
+        items.add(item);
+        return item;
+    }
+
+    public void removeItem(GameItem item) {
+        items.remove(item);
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    public List<GameItem> getItems() {
+        return Collections.unmodifiableList(items);
+    }
 }
-
-
-
-
-

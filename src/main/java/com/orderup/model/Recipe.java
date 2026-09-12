@@ -1,14 +1,41 @@
 package com.orderup.model;
 
-import lombok.Data;
-
-import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
-@Data
+/**
+ * 不可变菜谱配置。
+ */
 public class Recipe {
-    private String dishName;
-    private Set<Ingredient> requirements;
-    private int baseScore;
-    private int timeLimit;
+    private final DishType dishType;
+    private final int baseScore;
+    private final double timeLimitSeconds;
+    private final Set<Ingredient> contents;
+
+    public Recipe(DishType dishType, int baseScore, double timeLimitSeconds, Set<Ingredient> contents) {
+        this.dishType = Objects.requireNonNull(dishType);
+        this.baseScore = baseScore;
+        this.timeLimitSeconds = timeLimitSeconds;
+        this.contents = contents;
+    }
+
+    public DishType getDishType() {
+        return dishType;
+    }
+
+    public String getDishName() {
+        return dishType.getDisplayName();
+    }
+
+    public int getBaseScore() {
+        return baseScore;
+    }
+
+    public double getTimeLimitSeconds() {
+        return timeLimitSeconds;
+    }
+
+    public Set<Ingredient> getContents() {
+        return contents;
+    }
 }

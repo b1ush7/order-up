@@ -6,7 +6,7 @@ package com.orderup.util;
 public class GameTimer {
     private final Runnable onTimeUp;
 
-    private int secondsCount;
+    private int remainingSeconds;
     private double accumulatedSeconds;
     private boolean running;
 
@@ -14,12 +14,12 @@ public class GameTimer {
         this.onTimeUp = onTimeUp;
     }
 
-    public void startCountDown(int totalSeconds) {
+    public void start(int totalSeconds) {
         if (totalSeconds <= 0) {
             throw new IllegalArgumentException("Countdown seconds must be greater than zero.");
         }
 
-        secondsCount = totalSeconds;
+        remainingSeconds = totalSeconds;
         accumulatedSeconds = 0;
         running = true;
     }
@@ -35,10 +35,10 @@ public class GameTimer {
         accumulatedSeconds += deltaSeconds;
         while (running && accumulatedSeconds >= 1) {
             accumulatedSeconds -= 1;
-            secondsCount--;
+            remainingSeconds--;
 
-            if (secondsCount <= 0) {
-                secondsCount = 0;
+            if (remainingSeconds <= 0) {
+                remainingSeconds = 0;
                 running = false;
                 onTimeUp.run();
             }
@@ -49,7 +49,7 @@ public class GameTimer {
         running = false;
     }
 
-    public int getSecondsCount() {
-        return secondsCount;
+    public int getRemainingSeconds() {
+        return remainingSeconds;
     }
 }

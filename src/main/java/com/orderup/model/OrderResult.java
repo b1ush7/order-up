@@ -1,10 +1,15 @@
 package com.orderup.model;
 
-import lombok.Data;
+public record OrderResult(boolean success, boolean expired, String message, int scoreDelta) {
+    public static OrderResult success(String message, int scoreDelta) {
+        return new OrderResult(true, false, message, scoreDelta);
+    }
 
-@Data
-public class OrderResult {
-    private String success;
-    private String expired;
-    private String message;
+    public static OrderResult failed(String message) {
+        return new OrderResult(false, false, message, 0);
+    }
+
+    public static OrderResult expired(String message, int scoreDelta) {
+        return new OrderResult(false, true, message, scoreDelta);
+    }
 }

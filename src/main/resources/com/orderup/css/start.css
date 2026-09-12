@@ -65,17 +65,10 @@
     -fx-border-color: #ffdd7d;
 }
 
-.secondary-button,
 .quit-button {
     -fx-background-color: rgba(11, 17, 21, 0.72);
     -fx-border-color: #667977;
     -fx-text-fill: #e8eeeb;
-}
-
-.secondary-button:hover {
-    -fx-background-color: #e8eeeb;
-    -fx-border-color: #e8eeeb;
-    -fx-text-fill: #172124;
 }
 
 .quit-button:hover {

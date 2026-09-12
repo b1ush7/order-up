@@ -1,16 +1,43 @@
 package com.orderup.model;
 
-import lombok.Data;
-
 /**
- * 食材、盘子及成品等可拿取物品的抽象父类。
+ * 能够出现在地图上并被玩家拿取的物品。
  */
-@Data
-public class GameItem {
-    private String itemId;
-    private String itemType;
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+public abstract class GameItem {
+    private double x;
+    private double y;
+    private final double width = 40;
+    private final double height = 40;
+
+    public GameItem() {
+    }
+
+    public GameItem(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
 }

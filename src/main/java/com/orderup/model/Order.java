@@ -1,14 +1,51 @@
 package com.orderup.model;
 
-import lombok.Data;
+import java.util.Objects;
 
 /**
- * 保存顾客所需菜肴、剩余时间和订单状态。
+ * 一张正在计时的顾客订单。
  */
-@Data
 public class Order {
-    private String orderId;
-    private Recipe requiredDish;
-    private String remainingTime;
-    private String orderStatus;
+    private final String id;
+    private final Recipe recipe;
+    private double remainingSeconds;
+    private OrderStatus status = OrderStatus.ACTIVE;
+
+    public Order(String id, Recipe recipe) {
+        this.id = Objects.requireNonNull(id);
+        this.recipe = Objects.requireNonNull(recipe);
+        this.remainingSeconds = recipe.getTimeLimitSeconds();
+    }
+
+    public void update(double deltaSeconds) {
+        if (status != OrderStatus.ACTIVE) {
+            return;
+        }
+        remainingSeconds = Math.max(0, remainingSeconds - deltaSeconds);
+        if (remainingSeconds == 0) {
+            status = OrderStatus.EXPIRED;
+        }
+    }
+
+    public void complete() {
+        if (status == OrderStatus.ACTIVE) {
+            status = OrderStatus.COMPLETED;
+        }
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public double getRemainingSeconds() {
+        return remainingSeconds;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
 }

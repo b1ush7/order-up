@@ -4,24 +4,24 @@
 [![JavaFX](https://img.shields.io/badge/JavaFX-17-orange.svg)](https://openjfx.io/)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 
-> 基于 JavaFX 17 开发的单人挑战小吃摊模拟经营游戏，借鉴《胡闹厨房》核心玩法）。
+> 基于 JavaFX 17 开发的单人挑战小吃摊模拟经营游戏，借鉴《胡闹厨房》的核心玩法。
 
 ---
 
 ## 📖 项目简介 (Overview)
 
-* **玩法核心**：玩家需要在限定时间内根据顾客订单，完成**切菜**、**烹饪**、**装盘**、**出餐及洗碗**等流程，以此获得**奖金和小费**。
+* **当前玩法**：玩家可在限定时间内移动，从食材源取出食材，并拾取、放下物品或将物品放在桌面上。
 * **画面表现**：基于 JavaFX/ FXML 渲染的 2D 动效与 UI。
-* **关卡机制**：支持两种不同小吃摊位地图与递增难度设计。
+* **游戏节奏**：逻辑层以固定 60 Hz 更新。
 
 ---
 
 ## ✨ 核心特性 (Features)
 
-* 🍳 **丰富食材与烹饪链**：支持切菜，煮饭等多步骤加工。
-* ⏱️ **订单与倒计时系统**：支持提交奖励、超时扣分、连击奖励及小费计算。
+* 🥕 **基础食材与物品交互**：支持拾取、放下、食材源和桌面放置。
+* ⏱️ **倒计时与订单规则**：已实现独立的订单、菜谱和计分逻辑，尚未接入游戏界面。
 * 🎮 **操作方式**：支持单人键盘控制。
-* 🎵 **音效与视效**：包含小吃滋滋声、报警声、出餐成功提示音。
+* 🎵 **音频**：开始菜单支持循环背景音乐。
 
 ---
 
@@ -47,8 +47,9 @@
 
 1. **克隆仓库**
    ```bash
-   git clone [https://github.com/b1ush7/order-up.git](https://github.com/b1ush7/order-up.git)
+   git clone https://github.com/b1ush7/order-up.git
    cd order-up
+   ```
 2. **运行**
     ```bash
     # Linux / macOS
@@ -56,15 +57,16 @@
 
     # Windows
     .\mvnw.cmd clean javafx:run
+    ```
 
 ---
 
 ## 🎮 游戏操作说明 (Controls)
-* 动作	玩家 1 (Player 1)
-* 移动	W A S D	
-* 互动 / 抓取	J
-* 切菜 / 烹饪	K
-* 冲刺	LShift
+
+| 动作 | 按键 |
+| :--- | :--- |
+| 移动 | W A S D |
+| 互动 / 拾取 / 放下 | E |
 
 ---
 

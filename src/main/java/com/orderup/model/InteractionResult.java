@@ -1,12 +1,11 @@
 package com.orderup.model;
 
-import lombok.Data;
+public record InteractionResult(boolean success, String message) {
+    public static InteractionResult ok(String message) {
+        return new InteractionResult(true, message);
+    }
 
-/**
- * 返回玩家与工作台交互是否成功及对应提示。
- */
-@Data
-public class InteractionResult {
-    private String success;
-    private String message;
+    public static InteractionResult failed(String message) {
+        return new InteractionResult(false, message);
+    }
 }

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.orderup.controller.ResultController"
             prefHeight="720.0" prefWidth="1280.0">
-
+    <VBox alignment="CENTER" spacing="18.0"
+          AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+        <Label text="游戏结束" style="-fx-font-size: 48px; -fx-font-weight: bold;" />
+        <Button text="重新开始" onAction="#onRestartButtonClick" prefWidth="180.0" />
+        <Button text="返回菜单" onAction="#onMenuButtonClick" prefWidth="180.0" />
+    </VBox>
 </AnchorPane>

@@ -31,9 +31,6 @@
                 <Button defaultButton="true" maxWidth="340.0" minHeight="60.0"
                         onAction="#onStartButtonClick" styleClass="menu-button, primary-button"
                         text="开始游戏" />
-                <Button maxWidth="340.0" minHeight="60.0"
-                        onAction="#onSettingsButtonClick" styleClass="menu-button, secondary-button"
-                        text="选项" />
                 <Button cancelButton="true" maxWidth="340.0" minHeight="60.0"
                         onAction="#onQuitButtonClick" styleClass="menu-button, quit-button"
                         text="退出游戏" />
