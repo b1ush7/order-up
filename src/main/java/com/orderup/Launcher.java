@@ -1,14 +1,17 @@
 package com.orderup;
 
 import com.orderup.config.GameConfig;
+import com.orderup.controller.LevelSelectController;
 import com.orderup.controller.ResultController;
 import com.orderup.controller.StartController;
 import com.orderup.view.GameView;
+import com.orderup.view.SettingsView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -21,6 +24,8 @@ import java.net.URL;
  */
 public class Launcher extends Application {
     private static final String START_FXML = "/com/orderup/fxml/start.fxml";
+    private static final String LEVEL_SELECT_FXML = "/com/orderup/fxml/level-select.fxml";
+    private static final String SETTINGS_FXML = "/com/orderup/fxml/settings.fxml";
     private static final String GAME_FXML = "/com/orderup/fxml/game.fxml";
     private static final String RESULT_FXML = "/com/orderup/fxml/result.fxml";
     private static final String MENU_MUSIC = "/com/orderup/audio/startmenu.mp3";
@@ -28,6 +33,9 @@ public class Launcher extends Application {
     private Stage primaryStage;
     private MediaPlayer menuMusic;
     private GameView currentGameView;
+    private int selectedLevel = GameConfig.DEFAULT_LEVEL;
+    private boolean soundEnabled = true;
+    private boolean fullScreen;
 
     public static void main(String[] args) {
         Application.launch(Launcher.class, args);
@@ -39,6 +47,9 @@ public class Launcher extends Application {
         stage.setTitle("Order Up!");
         stage.setMinWidth(960);
         stage.setMinHeight(540);
+        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        stage.setFullScreenExitHint("");
+        stage.fullScreenProperty().addListener((observable, oldValue, newValue) -> fullScreen = newValue);
         showStartScene();
         stage.show();
     }
@@ -48,9 +59,24 @@ public class Launcher extends Application {
         playMenuMusic();
     }
 
+    public void showLevelSelectScene() {
+        showScene(LEVEL_SELECT_FXML);
+        playMenuMusic();
+    }
+
+    public void showSettingsScene() {
+        showScene(SETTINGS_FXML);
+        playMenuMusic();
+    }
+
     public void showGameScene() {
         stopMenuMusic();
         showScene(GAME_FXML);
+    }
+
+    public void showGameScene(int level) {
+        selectedLevel = level;
+        showGameScene();
     }
 
     public void showResultScene() {
@@ -92,16 +118,48 @@ public class Launcher extends Application {
 
     private void configureController(Object controller) {
         if (controller instanceof StartController startController) {
-            startController.configure(this::showGameScene, Platform::exit);
+            startController.configure(this::showLevelSelectScene, this::showSettingsScene, Platform::exit);
+        } else if (controller instanceof LevelSelectController levelSelectController) {
+            levelSelectController.configure(this::showGameScene, this::showStartScene);
+        } else if (controller instanceof SettingsView settingsView) {
+            settingsView.configure(
+                    soundEnabled,
+                    fullScreen,
+                    this::setSoundEnabled,
+                    this::setFullScreen,
+                    this::showStartScene
+            );
         } else if (controller instanceof ResultController resultController) {
             resultController.configure(this::showGameScene, this::showStartScene);
         } else if (controller instanceof GameView gameView) {
-            gameView.setOnGameFinished(this::showResultScene);
+            gameView.configure(
+                    selectedLevel,
+                    this::showResultScene,
+                    this::showStartScene,
+                    this::showLevelSelectScene
+            );
             currentGameView = gameView;
         }
     }
 
+    private void setSoundEnabled(boolean enabled) {
+        soundEnabled = enabled;
+        if (enabled) {
+            playMenuMusic();
+        } else {
+            stopMenuMusic();
+        }
+    }
+
+    private void setFullScreen(boolean enabled) {
+        fullScreen = enabled;
+        primaryStage.setFullScreen(enabled);
+    }
+
     private void playMenuMusic() {
+        if (!soundEnabled) {
+            return;
+        }
         if (menuMusic == null) {
             URL resource = Launcher.class.getResource(MENU_MUSIC);
             if (resource == null) {

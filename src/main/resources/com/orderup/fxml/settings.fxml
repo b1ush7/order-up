@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/start.css"
+           xmlns="http://javafx.com/javafx/17.0.10" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.orderup.view.SettingsView">
+    <Region styleClass="menu-background" />
+    <Region maxHeight="5.0" StackPane.alignment="TOP_CENTER" styleClass="top-accent" />
+
+    <BorderPane maxHeight="720.0" maxWidth="1280.0" styleClass="menu-layout">
+        <top>
+            <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                <Label styleClass="brand-mark" text="ORDER UP!" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label styleClass="screen-label" text="SETTINGS" />
+                <padding>
+                    <Insets bottom="24.0" left="44.0" right="44.0" top="30.0" />
+                </padding>
+            </HBox>
+        </top>
+
+        <center>
+            <VBox alignment="CENTER" maxWidth="560.0" spacing="24.0" BorderPane.alignment="CENTER">
+                <VBox alignment="CENTER" spacing="6.0">
+                    <Label styleClass="level-heading" text="游戏设置" />
+                    <Label styleClass="level-subtitle" text="按你的习惯调整游戏体验" />
+                </VBox>
+
+                <VBox maxWidth="520.0" spacing="8.0" styleClass="settings-panel">
+                    <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="setting-row">
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label styleClass="setting-title" text="声音" />
+                            <Label styleClass="setting-description" text="打开或关闭背景音乐与游戏音效" />
+                        </VBox>
+                        <CheckBox fx:id="soundCheckBox" onAction="#onSoundChanged"
+                                  styleClass="setting-check-box" text="开启" />
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="setting-row">
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label styleClass="setting-title" text="全屏显示" />
+                            <Label styleClass="setting-description" text="让游戏铺满整个屏幕" />
+                        </VBox>
+                        <CheckBox fx:id="fullScreenCheckBox" onAction="#onFullScreenChanged"
+                                  styleClass="setting-check-box" text="开启" />
+                    </HBox>
+                </VBox>
+
+                <Button cancelButton="true" minHeight="52.0" onAction="#onBackButtonClick"
+                        styleClass="menu-button, primary-button, settings-back-button" text="保存并返回" />
+            </VBox>
+        </center>
+
+        <bottom>
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+                <Label styleClass="footer-text" text="ORDER UP!  /  SETTINGS" />
+                <padding>
+                    <Insets bottom="28.0" left="44.0" right="44.0" top="20.0" />
+                </padding>
+            </HBox>
+        </bottom>
+    </BorderPane>
+</StackPane>

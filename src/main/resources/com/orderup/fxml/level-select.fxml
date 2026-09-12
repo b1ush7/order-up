@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/start.css"
+           xmlns="http://javafx.com/javafx/17.0.10" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.orderup.controller.LevelSelectController">
+    <Region styleClass="menu-background" />
+    <Region maxHeight="5.0" StackPane.alignment="TOP_CENTER" styleClass="top-accent" />
+
+    <BorderPane maxHeight="720.0" maxWidth="1280.0" styleClass="menu-layout">
+        <top>
+            <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+                <Label styleClass="brand-mark" text="ORDER UP!" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label styleClass="screen-label" text="LEVEL SELECT" />
+                <padding>
+                    <Insets bottom="20.0" left="44.0" right="44.0" top="30.0" />
+                </padding>
+            </HBox>
+        </top>
+
+        <center>
+            <VBox alignment="CENTER" spacing="26.0" BorderPane.alignment="CENTER">
+                <VBox alignment="CENTER" spacing="6.0">
+                    <Label styleClass="level-heading" text="选择关卡" />
+                    <Label styleClass="level-subtitle" text="选择一间厨房，开始今天的营业" />
+                </VBox>
+
+                <HBox alignment="CENTER" spacing="26.0">
+                    <VBox alignment="CENTER" prefHeight="300.0" prefWidth="350.0" spacing="14.0"
+                          styleClass="level-card">
+                        <Label styleClass="level-number" text="LEVEL 01" />
+                        <Label styleClass="level-name" text="基础厨房" />
+                        <Label styleClass="level-description" text="熟悉取材、加工与装盘流程"
+                               wrapText="true" />
+                        <Label styleClass="level-ingredients" text="食材：鱼 · 米" />
+                        <Region prefHeight="12.0" />
+                        <Button defaultButton="true" minHeight="52.0" onAction="#onLevelOneButtonClick"
+                                styleClass="menu-button, primary-button, level-button" text="进入第一关" />
+                    </VBox>
+
+                    <VBox alignment="CENTER" prefHeight="300.0" prefWidth="350.0" spacing="14.0"
+                          styleClass="level-card">
+                        <Label styleClass="level-number" text="LEVEL 02" />
+                        <Label styleClass="level-name" text="进阶厨房" />
+                        <Label styleClass="level-description" text="增加海苔食材，完成更丰富的菜品"
+                               wrapText="true" />
+                        <Label styleClass="level-ingredients" text="食材：鱼 · 米 · 海苔" />
+                        <Region prefHeight="12.0" />
+                        <Button minHeight="52.0" onAction="#onLevelTwoButtonClick"
+                                styleClass="menu-button, secondary-button, level-button" text="进入第二关" />
+                    </VBox>
+                </HBox>
+
+                <Button cancelButton="true" minHeight="46.0" onAction="#onBackButtonClick"
+                        styleClass="menu-button, back-button" text="返回主菜单" />
+            </VBox>
+        </center>
+
+        <bottom>
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+                <Label styleClass="footer-text" text="ORDER UP!  /  LEVEL SELECT" />
+                <padding>
+                    <Insets bottom="22.0" left="44.0" right="44.0" top="12.0" />
+                </padding>
+            </HBox>
+        </bottom>
+    </BorderPane>
+</StackPane>

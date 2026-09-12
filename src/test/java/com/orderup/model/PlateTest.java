@@ -24,4 +24,16 @@ class PlateTest {
         assertFalse(plate.addIngredient(new Ingredient(IngredientType.FISH, 0, 0)));
         assertTrue(plate.isEmpty());
     }
+
+    @Test
+    void recognizesRollFromCookedRiceAndRawKelp() {
+        Ingredient rice = new Ingredient(IngredientType.RICE, 0, 0);
+        rice.setStatus(IngredientStatus.COOKED);
+        Ingredient kelp = new Ingredient(IngredientType.KELP, 0, 0);
+        Plate plate = new Plate();
+
+        assertTrue(plate.addIngredient(rice));
+        assertTrue(plate.addIngredient(kelp));
+        assertEquals(DishType.ROLL, plate.getDishType());
+    }
 }

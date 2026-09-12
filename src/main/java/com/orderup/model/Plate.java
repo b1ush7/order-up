@@ -18,7 +18,11 @@ public class Plate extends GameItem {
     }
 
     public boolean addIngredient(Ingredient ingredient) {
-        if (ingredient == null || ingredient.getStatus() == IngredientStatus.RAW) {
+        if (ingredient == null) {
+            return false;
+        }
+        if (ingredient.getStatus() == IngredientStatus.RAW
+                && ingredient.getType() != IngredientType.KELP) {
             return false;
         }
         return contents.add(ingredient);

@@ -114,6 +114,21 @@ public class GameController {
         player.clearInput();
     }
 
+    /** 暂停游戏逻辑和倒计时推进。 */
+    public void pauseGame() {
+        if (state == GameState.RUNNING) {
+            state = GameState.PAUSED;
+            player.clearInput();
+        }
+    }
+
+    /** 从暂停状态继续游戏。 */
+    public void resumeGame() {
+        if (state == GameState.PAUSED) {
+            state = GameState.RUNNING;
+        }
+    }
+
     /**
      * 让玩家与面前的设施或物品交互。
      *
