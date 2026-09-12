@@ -5,18 +5,29 @@ import com.orderup.model.*;
 
 public interface GameService {
     /**
-     * 创建并完成一张新地图的初始化。
+     * 按默认关卡创建并初始化地图。
      *
      * @return 包含地板、设施和初始物品的地图
      */
-    GameMap createMap();
+    default GameMap createMap() {
+        return createMap(GameConfig.DEFAULT_LEVEL);
+    }
+
+    /**
+     * 按指定关卡创建并初始化地图。
+     *
+     * @param level 关卡编号
+     * @return 包含该关卡食材源和设施的地图
+     */
+    GameMap createMap(int level);
 
     /**
      * 在地图上放置边界桌面、中央桌面、食材源和初始盘子。
      *
      * @param map 要配置的空白地图
+     * @param level 关卡编号
      */
-    default void configureMap(GameMap map) {
+    default void configureMap(GameMap map, int level) {
         for (int row = 0; row < GameConfig.MAP_ROWS; row++) {
             placeTable(map, row, 0);
             placeTable(map, row, GameConfig.MAP_COLUMNS - 1);
@@ -29,7 +40,13 @@ public interface GameService {
             placeTable(map, row, 5);
         }
 
-        map.setTile(0, 1, new Tile(0, 1, TileType.INGREDIENT_SOURCE));
+        for (GameConfig.IngredientSourceConfig source : GameConfig.getIngredientSources(level)) {
+            map.setTile(
+                    source.row(),
+                    source.column(),
+                    new IngredientSource(source.row(), source.column(), source.ingredientType())
+            );
+        }
         map.addItem(new Plate(130, 130));
     }
 

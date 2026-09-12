@@ -14,4 +14,5 @@ public enum TileType {
     public boolean isBlocking() {
         return blocking;
     }
+
 }

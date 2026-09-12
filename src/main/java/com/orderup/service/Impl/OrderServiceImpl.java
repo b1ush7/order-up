@@ -13,7 +13,7 @@ public class OrderServiceImpl implements OrderService {
     private final List<Order> activeOrders = new ArrayList<>();
     private final ScoreServiceImpl scoreService;
     private final Random random;
-    private final List<Recipe> recipes= GameConfig.recipes;
+    private final List<Recipe> recipes = GameConfig.RECIPES;
 
     /**
      * 使用默认计分服务和随机数生成器创建订单服务。

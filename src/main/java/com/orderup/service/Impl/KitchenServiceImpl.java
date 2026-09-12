@@ -4,14 +4,13 @@ import com.orderup.config.GameConfig;
 import com.orderup.model.GameItem;
 import com.orderup.model.GameMap;
 import com.orderup.model.Ingredient;
-import com.orderup.model.IngredientType;
+import com.orderup.model.IngredientSource;
 import com.orderup.model.InteractionArea;
 import com.orderup.model.InteractionResult;
 import com.orderup.model.Plate;
 import com.orderup.model.Player;
 import com.orderup.model.Table;
 import com.orderup.model.Tile;
-import com.orderup.model.TileType;
 
 /**
  * 处理拾取、放下、食材来源和桌面装盘。
@@ -25,20 +24,19 @@ public class KitchenServiceImpl implements com.orderup.service.KitchenService {
         if (player.hasHeldItem()) {
             return placeOrDrop(player, area, map, tile);
         }
-        if (tile != null && tile.getType() == TileType.INGREDIENT_SOURCE) {
-            return takeIngredientFromSource(player, area, map);
-        }
         if (tile instanceof Table table && !table.isEmpty()) {
             player.pickUp(table.take());
             return InteractionResult.ok("拿起物品");
         }
-
         for (GameItem item : map.getItems()) {
             if (item != player.getHeldItem()
                     && area.intersects(item.getX(), item.getY(), item.getWidth(), item.getHeight())) {
                 player.pickUp(item);
                 return InteractionResult.ok("拿起物品");
             }
+        }
+        if (tile instanceof IngredientSource source) {
+            return takeIngredientFromSource(player, area, map, source);
         }
         return InteractionResult.failed("附近没有可交互物品");
     }
@@ -107,10 +105,11 @@ public class KitchenServiceImpl implements com.orderup.service.KitchenService {
     public InteractionResult takeIngredientFromSource(
             Player player,
             InteractionArea area,
-            GameMap map
+            GameMap map,
+            IngredientSource source
     ) {
         Ingredient ingredient = map.addItem(
-                new Ingredient(IngredientType.FISH, area.getX(), area.getY())
+                new Ingredient(source.getIngredientType(), area.getX(), area.getY())
         );
         player.pickUp(ingredient);
         return InteractionResult.ok("取得食材");
@@ -119,8 +118,8 @@ public class KitchenServiceImpl implements com.orderup.service.KitchenService {
     /** {@inheritDoc} */
     @Override
     public Tile findTile(InteractionArea area, GameMap map) {
-        double centerX=area.getX()+InteractionArea.WIDTH/2;
-        double centerY=area.getY()+InteractionArea.HEIGHT/2;
+        double centerX = area.getX() + InteractionArea.WIDTH / 2;
+        double centerY = area.getY() + InteractionArea.HEIGHT / 2;
 
         int column = (int) (centerX / GameConfig.TILE_SIZE);
         int row = (int) (centerY / GameConfig.TILE_SIZE);

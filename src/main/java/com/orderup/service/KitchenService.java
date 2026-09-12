@@ -7,8 +7,8 @@ public interface KitchenService {
      * 根据玩家手持状态和面前目标，执行拾取、放下、取食材或桌面交互。
      *
      * @param player 发起交互的玩家
-     * @param area 玩家面前的交互检测区域
-     * @param map 当前游戏地图
+     * @param area   玩家面前的交互检测区域
+     * @param map    当前游戏地图
      * @return 交互是否成功及提示信息
      */
     InteractionResult interact(Player player, InteractionArea area, GameMap map);
@@ -53,16 +53,18 @@ public interface KitchenService {
      * @param player 拿取食材的玩家
      * @param area 新食材的初始位置
      * @param map 当前游戏地图
+     * @param source 本次交互的食材源
      * @return 取得食材的结果
      */
     InteractionResult takeIngredientFromSource(
             Player player,
             InteractionArea area,
-            GameMap map
+            GameMap map,
+            IngredientSource source
     );
 
     /**
-     * 按地图行列顺序查找第一个与交互区域相交的格子。
+     * 根据交互区域的中心点确定唯一目标格子。
      *
      * @param area 交互检测区域
      * @param map 当前游戏地图

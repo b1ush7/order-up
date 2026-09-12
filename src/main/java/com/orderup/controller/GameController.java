@@ -30,11 +30,21 @@ public class GameController {
     private GameState state = GameState.READY;
 
     /**
-     * 创建一局新游戏，并初始化玩家、地图、交互区域和服务。
+     * 按默认关卡创建一局新游戏。
      *
      * @param onGameFinished 游戏结束后执行的回调，通常用于切换到结算页
      */
     public GameController(Runnable onGameFinished) {
+        this(GameConfig.DEFAULT_LEVEL, onGameFinished);
+    }
+
+    /**
+     * 按指定关卡创建一局新游戏，并初始化玩家、地图、交互区域和服务。
+     *
+     * @param level 关卡编号
+     * @param onGameFinished 游戏结束后执行的回调，通常用于切换到结算页
+     */
+    public GameController(int level, Runnable onGameFinished) {
         this.onGameFinished = onGameFinished;
 
         GameService gameService = new GameServiceImpl();
@@ -43,7 +53,7 @@ public class GameController {
 
         player = new Player(GameConfig.PLAYER_START_X, GameConfig.PLAYER_START_Y);
         interactionArea = new InteractionArea();
-        gameMap = gameService.createMap();
+        gameMap = gameService.createMap(level);
         gameTimer = new GameTimer(this::finishGame);
         interactionArea.updateFrom(player);
     }

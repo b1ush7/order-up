@@ -9,9 +9,9 @@ import com.orderup.service.GameService;
 public class GameServiceImpl implements GameService {
     /** {@inheritDoc} */
     @Override
-    public GameMap createMap() {
+    public GameMap createMap(int level) {
         GameMap map = new GameMap();
-        configureMap(map);
+        configureMap(map, level);
         return map;
     }
 

@@ -32,7 +32,7 @@ class OrderServiceTest {
             plate.addIngredient(ingredient(IngredientType.FISH, IngredientStatus.CUT));
         } else {
             plate.addIngredient(ingredient(IngredientType.RICE, IngredientStatus.COOKED));
-            plate.addIngredient(ingredient(IngredientType.KELP, IngredientStatus.CUT));
+            plate.addIngredient(ingredient(IngredientType.KELP, IngredientStatus.RAW));
         }
         return plate;
     }

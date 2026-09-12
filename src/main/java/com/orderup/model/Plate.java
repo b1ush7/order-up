@@ -30,7 +30,7 @@ public class Plate extends GameItem {
         }
         if (contents.size() == 2
                 && count(IngredientType.RICE, IngredientStatus.COOKED) == 1
-                && count(IngredientType.KELP, IngredientStatus.CUT) == 1) {
+                && count(IngredientType.KELP, IngredientStatus.RAW) == 1) {
             return DishType.ROLL;
         }
         return null;
