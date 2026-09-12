@@ -7,6 +7,7 @@ import com.orderup.service.GameService;
  * 创建并初始化关卡地图。
  */
 public class GameServiceImpl implements GameService {
+    /** {@inheritDoc} */
     @Override
     public GameMap createMap() {
         GameMap map = new GameMap();

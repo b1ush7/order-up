@@ -1,5 +1,6 @@
 package com.orderup.service.Impl;
 
+import com.orderup.config.GameConfig;
 import com.orderup.model.GameItem;
 import com.orderup.model.GameMap;
 import com.orderup.model.Ingredient;
@@ -16,6 +17,7 @@ import com.orderup.model.TileType;
  * 处理拾取、放下、食材来源和桌面装盘。
  */
 public class KitchenServiceImpl implements com.orderup.service.KitchenService {
+    /** {@inheritDoc} */
     @Override
     public InteractionResult interact(Player player, InteractionArea area, GameMap map) {
         Tile tile = findTile(area, map);
@@ -41,6 +43,7 @@ public class KitchenServiceImpl implements com.orderup.service.KitchenService {
         return InteractionResult.failed("附近没有可交互物品");
     }
 
+    /** {@inheritDoc} */
     @Override
     public void updateHeldItem(Player player, InteractionArea area) {
         GameItem heldItem = player.getHeldItem();
@@ -50,6 +53,7 @@ public class KitchenServiceImpl implements com.orderup.service.KitchenService {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public InteractionResult placeOrDrop(
             Player player,
@@ -67,6 +71,7 @@ public class KitchenServiceImpl implements com.orderup.service.KitchenService {
         return InteractionResult.ok("放下物品");
     }
 
+    /** {@inheritDoc} */
     @Override
     public InteractionResult interactWithTable(Player player, Table table, GameMap map) {
         GameItem heldItem = player.getHeldItem();
@@ -97,6 +102,7 @@ public class KitchenServiceImpl implements com.orderup.service.KitchenService {
         return InteractionResult.failed("桌面已被占用");
     }
 
+    /** {@inheritDoc} */
     @Override
     public InteractionResult takeIngredientFromSource(
             Player player,
@@ -110,15 +116,20 @@ public class KitchenServiceImpl implements com.orderup.service.KitchenService {
         return InteractionResult.ok("取得食材");
     }
 
+    /** {@inheritDoc} */
     @Override
     public Tile findTile(InteractionArea area, GameMap map) {
-        for (Tile[] row : map.getTiles()) {
-            for (Tile tile : row) {
-                if (area.intersects(tile.getX(), tile.getY(), tile.getSize(), tile.getSize())) {
-                    return tile;
-                }
-            }
+        double centerX=area.getX()+InteractionArea.WIDTH/2;
+        double centerY=area.getY()+InteractionArea.HEIGHT/2;
+
+        int column = (int) (centerX / GameConfig.TILE_SIZE);
+        int row = (int) (centerY / GameConfig.TILE_SIZE);
+
+        if (row < 0 || row >= GameConfig.MAP_ROWS
+                || column < 0 || column >= GameConfig.MAP_COLUMNS) {
+            return null;
         }
-        return null;
+
+        return map.getTile(row, column);
     }
 }

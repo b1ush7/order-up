@@ -10,6 +10,7 @@ import com.orderup.model.Tile;
  * 根据输入移动玩家并处理地图碰撞。
  */
 public class PlayerServiceImpl implements com.orderup.service.PlayerService {
+    /** {@inheritDoc} */
     @Override
     public void move(
             Player player,
@@ -42,6 +43,12 @@ public class PlayerServiceImpl implements com.orderup.service.PlayerService {
         }
     }
 
+    /**
+     * 将左右按键状态合并为水平方向值。
+     *
+     * @param player 输入状态的来源
+     * @return 向左为 -1，向右为 1，抵消或无输入为 0
+     */
     private double horizontalInput(Player player) {
         double direction = 0;
         if (player.isMoving(Direction.LEFT)) {
@@ -53,6 +60,12 @@ public class PlayerServiceImpl implements com.orderup.service.PlayerService {
         return direction;
     }
 
+    /**
+     * 将上下按键状态合并为垂直方向值。
+     *
+     * @param player 输入状态的来源
+     * @return 向上为 -1，向下为 1，抵消或无输入为 0
+     */
     private double verticalInput(Player player) {
         double direction = 0;
         if (player.isMoving(Direction.UP)) {
@@ -64,6 +77,14 @@ public class PlayerServiceImpl implements com.orderup.service.PlayerService {
         return direction;
     }
 
+    /**
+     * 检查玩家放在候选坐标后是否会与任意阻挡格子重叠。
+     *
+     * @param x 玩家候选 X 坐标
+     * @param y 玩家候选 Y 坐标
+     * @param map 用于查找阻挡格子的地图
+     * @return 存在碰撞时返回 {@code true}
+     */
     private boolean collidesWithBlockingTile(double x, double y, GameMap map) {
         for (int row = 0; row < GameConfig.MAP_ROWS; row++) {
             for (int column = 0; column < GameConfig.MAP_COLUMNS; column++) {
@@ -76,6 +97,9 @@ public class PlayerServiceImpl implements com.orderup.service.PlayerService {
         return false;
     }
 
+    /**
+     * 使用轴对齐矩形检测玩家与一个格子是否相交。
+     */
     private boolean intersects(double x, double y, Tile tile) {
         return x < tile.getX() + tile.getSize()
                 && x + Player.WIDTH > tile.getX()
@@ -83,6 +107,9 @@ public class PlayerServiceImpl implements com.orderup.service.PlayerService {
                 && y + Player.HEIGHT > tile.getY();
     }
 
+    /**
+     * 将数值限制在指定闭区间内。
+     */
     private double clamp(double value, double minimum, double maximum) {
         return Math.max(minimum, Math.min(value, maximum));
     }

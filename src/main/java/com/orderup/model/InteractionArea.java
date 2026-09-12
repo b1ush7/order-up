@@ -4,8 +4,8 @@ package com.orderup.model;
  * 玩家面前用于检测物品和工作台的交互区域。
  */
 public class InteractionArea {
-    public static final double WIDTH = 20;
-    public static final double HEIGHT = 20;
+    public static final double WIDTH = 40;
+    public static final double HEIGHT = 40;
 
     private double x;
     private double y;

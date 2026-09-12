@@ -14,15 +14,26 @@ public class OrderServiceImpl implements OrderService {
     private final ScoreServiceImpl scoreService;
     private final Random random;
     private final List<Recipe> recipes= GameConfig.recipes;
+
+    /**
+     * 使用默认计分服务和随机数生成器创建订单服务。
+     */
     public OrderServiceImpl() {
         this(new ScoreServiceImpl(), new Random());
     }
 
+    /**
+     * 创建可注入计分策略和随机数生成器的订单服务，便于测试。
+     *
+     * @param scoreService 订单成功后使用的计分服务
+     * @param random 随机选择菜谱时使用的随机数生成器
+     */
     OrderServiceImpl(ScoreServiceImpl scoreService, Random random) {
         this.scoreService = scoreService;
         this.random = random;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Order createRandomOrder() {
         Recipe recipe = recipes.get(random.nextInt(recipes.size()));
@@ -31,11 +42,13 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<Order> getActiveOrders() {
         return Collections.unmodifiableList(activeOrders);
     }
 
+    /** {@inheritDoc} */
     @Override
     public void updateOrders(double deltaSeconds) {
         if (deltaSeconds < 0) {
@@ -45,6 +58,7 @@ public class OrderServiceImpl implements OrderService {
         activeOrders.removeIf(order -> order.getRemainingSeconds() == 0);
     }
 
+    /** {@inheritDoc} */
     @Override
     public OrderResult submitPlate(Plate plate) {
         if (plate == null || plate.isEmpty()) {

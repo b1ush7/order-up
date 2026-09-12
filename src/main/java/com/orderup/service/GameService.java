@@ -4,8 +4,18 @@ import com.orderup.config.GameConfig;
 import com.orderup.model.*;
 
 public interface GameService {
+    /**
+     * 创建并完成一张新地图的初始化。
+     *
+     * @return 包含地板、设施和初始物品的地图
+     */
     GameMap createMap();
 
+    /**
+     * 在地图上放置边界桌面、中央桌面、食材源和初始盘子。
+     *
+     * @param map 要配置的空白地图
+     */
     default void configureMap(GameMap map) {
         for (int row = 0; row < GameConfig.MAP_ROWS; row++) {
             placeTable(map, row, 0);
@@ -23,6 +33,13 @@ public interface GameService {
         map.addItem(new Plate(130, 130));
     }
 
+    /**
+     * 将地图的指定格子替换为桌面。
+     *
+     * @param map 目标地图
+     * @param row 格子行号
+     * @param column 格子列号
+     */
     default void placeTable(GameMap map, int row, int column) {
         map.setTile(row, column, new Table(row, column));
     }

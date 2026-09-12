@@ -6,8 +6,8 @@ package com.orderup.model;
 public abstract class GameItem {
     private double x;
     private double y;
-    private final double width = 20;
-    private final double height = 20;
+    private final double width = 40;
+    private final double height = 40;
 
     public GameItem() {
     }
